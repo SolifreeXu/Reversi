@@ -1,9 +1,3 @@
-<style>
-table {
-	margin: auto;
-}
-</style>
-
 # 黑白棋
 又名翻转棋。
 
@@ -22,11 +16,11 @@ table {
 
 ## 界面
 初始菜单界面如下图所示：  
-![初始菜单](img/Menu1.png#pic_center =321x245)  
+![初始菜单](img/Menu1.png)  
 在中止一次游戏之后，菜单增加继续游戏选项，此时菜单界面如下图所示：  
-![完整菜单](img/Menu2.png#pic_center =321x245)  
+![完整菜单](img/Menu2.png)  
 棋局界面布局如下图所示：  
-![棋局布局](img/Chessboard.png#pic_center =321x245)
+![棋局布局](img/Chessboard.png)
 
 ## 说明
 菜单界面的按键与作用如下表所示：
