@@ -1,7 +1,7 @@
-#ifndef REVERSI_H
+ï»¿#ifndef REVERSI_H
 #define REVERSI_H
 
-// ¼üÖµ
+// é”®å€¼
 #define ENTER 13
 #define ESCAPE 27
 #define SPACE 32
@@ -10,7 +10,7 @@
 #define LEFT 75
 #define RIGHT 77
 
-// ÃüÃû¿Õ¼ä
+// å‘½åç©ºé—´
 #define REVERSI_BEGIN namespace reversi {
 #define REVERSI_END }
 

@@ -1,46 +1,46 @@
-#pragma once
+ï»¿#pragma once
 
 #include <cstdint>
 
 class Renderer
 {
-	void *_handle; // ´°¿Ú¾ä±ú
-	int16_t _row, _column; // ´°¿ÚĞĞÊıºÍÁĞÊı
+	void *_handle; // çª—å£å¥æŸ„
+	int16_t _row, _column; // çª—å£è¡Œæ•°å’Œåˆ—æ•°
 
 private:
-	// ³õÊ¼»¯´°¿Ú
+	// åˆå§‹åŒ–çª—å£
 	void init(const char* _title) const;
 
-	// Òş²Ø¹â±ê
+	// éšè—å…‰æ ‡
 	void hideCursor() const;
 
-	// ÏÔÊ¾¹â±ê
+	// æ˜¾ç¤ºå…‰æ ‡
 	void showCursor() const;
 
-	// Òş²Ø¹â±ê
+	// éšè—å…‰æ ‡
 	void moveCursor(int16_t _x, int16_t _y) const;
 
 public:
 	Renderer(int16_t _row, int16_t _column, const char *_title = nullptr);
 
-	// »ñÈ¡´°¿ÚĞĞÊı
+	// è·å–çª—å£è¡Œæ•°
 	int16_t getRow() const noexcept { return _row; }
 
-	// »ñÈ¡´°¿ÚÁĞÊı
+	// è·å–çª—å£åˆ—æ•°
 	int16_t getColumn() const noexcept { return _column; }
 
-	// Çå¿Õ¿ØÖÆÌ¨´°¿Ú
+	// æ¸…ç©ºæ§åˆ¶å°çª—å£
 	void clearScreen() const;
 
-	// ÉèÖÃ´°¿ÚÑÕÉ«
+	// è®¾ç½®çª—å£é¢œè‰²
 	void setScreenColor(uint16_t _background, uint16_t _foreground = 0x0F) const;
 
-	// ÉèÖÃÎÄ±¾ÑÕÉ«
+	// è®¾ç½®æ–‡æœ¬é¢œè‰²
 	void setTextColor(uint16_t _foreground, uint16_t _background) const;
 
-	// Êä³öÎÄ±¾ÖÁÖ¸¶¨Î»ÖÃ
+	// è¾“å‡ºæ–‡æœ¬è‡³æŒ‡å®šä½ç½®
 	void outText(int16_t _x, int16_t _y, const char *_text) const;
 
-	// Êä³öÎÄ±¾ÖÁÖ¸¶¨·¶Î§
+	// è¾“å‡ºæ–‡æœ¬è‡³æŒ‡å®šèŒƒå›´
 	void outText(int16_t _left, int16_t _right, int16_t _up, int16_t _down, const char *_text) const;
 };

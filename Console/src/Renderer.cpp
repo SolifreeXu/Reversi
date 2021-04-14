@@ -1,4 +1,4 @@
-#include "Renderer.hpp"
+ï»¿#include "Renderer.hpp"
 
 #include <Windows.h>
 
@@ -8,42 +8,42 @@
 #include <iostream>
 #include <sstream>
 
-// ³õÊ¼»¯´°¿Ú
+// åˆå§‹åŒ–çª—å£
 //void Renderer::init(const char *_title) const
 //{
-//	// ÉèÖÃ´°¿Ú³¤¿í
+//	// è®¾ç½®çª—å£é•¿å®½
 //	std::string command = "mode con lines=" + std::to_string(_row) + " cols=" + std::to_string(_column);
 //	std::system(command.c_str());
 //
-//	// ÉèÖÃ´°¿Ú±êÌâ
+//	// è®¾ç½®çª—å£æ ‡é¢˜
 //	if (_title)
 //	{
 //		command.assign("title ").append(_title);
 //		std::system(command.c_str());
 //	}
 //
-//	// Òş²Ø¹â±ê
+//	// éšè—å…‰æ ‡
 //	hideCursor();
 //}
 
-// ³õÊ¼»¯´°¿Ú
+// åˆå§‹åŒ–çª—å£
 void Renderer::init(const char* _title) const
 {
-	// ÉèÖÃ´°¿Ú³¤¿í
+	// è®¾ç½®çª—å£é•¿å®½
 	SMALL_RECT rect = { 0, 0, _column - 1, _row - 1 };
 	SetConsoleWindowInfo(_handle, TRUE, &rect);
 
-	// µ±ÆÁÄ»»º³åÇø³¤¿íÓë´°¿Ú³¤¿íÒ»ÖÂÊ±£¬Òş²Øºá×İ¹ö¶¯Ìõ
+	// å½“å±å¹•ç¼“å†²åŒºé•¿å®½ä¸çª—å£é•¿å®½ä¸€è‡´æ—¶ï¼Œéšè—æ¨ªçºµæ»šåŠ¨æ¡
 	SetConsoleScreenBufferSize(_handle, COORD{ _column, _row });
 
-	// ¹Ì¶¨´°¿Ú´óĞ¡
+	// å›ºå®šçª—å£å¤§å°
 	SetWindowLongPtr(
-		GetConsoleWindow(), // »ñÈ¡¿ØÖÆÌ¨´°¿Ú¾ä±ú
-		GWL_STYLE, // Ö¸¶¨ĞŞ¸Ä´°¿ÚÑùÊ½
-		GetWindowLongPtr(GetConsoleWindow(), GWL_STYLE) // »ñÈ¡´°¿ÚÔ­ÑùÊ½
-		& ~WS_SIZEBOX & ~WS_MAXIMIZEBOX); // ´°¿Ú´óĞ¡ÉèÎªÎŞ·¨¸Ä±ä£¬×î´ó»¯°´Å¥ÉèÎª²»»îÔ¾
+		GetConsoleWindow(), // è·å–æ§åˆ¶å°çª—å£å¥æŸ„
+		GWL_STYLE, // æŒ‡å®šä¿®æ”¹çª—å£æ ·å¼
+		GetWindowLongPtr(GetConsoleWindow(), GWL_STYLE) // è·å–çª—å£åŸæ ·å¼
+		& ~WS_SIZEBOX & ~WS_MAXIMIZEBOX); // çª—å£å¤§å°è®¾ä¸ºæ— æ³•æ”¹å˜ï¼Œæœ€å¤§åŒ–æŒ‰é’®è®¾ä¸ºä¸æ´»è·ƒ
 
-	// ÉèÖÃ´°¿Ú±êÌâ
+	// è®¾ç½®çª—å£æ ‡é¢˜
 	if (_title)
 	{
 #if defined UNICODE
@@ -60,11 +60,11 @@ void Renderer::init(const char* _title) const
 #endif
 	}
 
-	// Òş²Ø¹â±ê
+	// éšè—å…‰æ ‡
 	hideCursor();
 }
 
-// Òş²Ø¹â±ê
+// éšè—å…‰æ ‡
 void Renderer::hideCursor() const
 {
 	CONSOLE_CURSOR_INFO info;
@@ -73,13 +73,13 @@ void Renderer::hideCursor() const
 	SetConsoleCursorInfo(_handle, &info);
 }
 
-// Òş²Ø¹â±ê£¨²»¼æÈİ¾É°æ¿ØÖÆÌ¨£©
+// éšè—å…‰æ ‡ï¼ˆä¸å…¼å®¹æ—§ç‰ˆæ§åˆ¶å°ï¼‰
 //void Renderer::hideCursor() const
 //{
 //	std::cout << "\033[?25l";
 //}
 
-// ÏÔÊ¾¹â±ê
+// æ˜¾ç¤ºå…‰æ ‡
 void Renderer::showCursor() const
 {
 	CONSOLE_CURSOR_INFO info;
@@ -88,34 +88,34 @@ void Renderer::showCursor() const
 	SetConsoleCursorInfo(_handle, &info);
 }
 
-// ÏÔÊ¾¹â±ê£¨²»¼æÈİ¾É°æ¿ØÖÆÌ¨£©
+// æ˜¾ç¤ºå…‰æ ‡ï¼ˆä¸å…¼å®¹æ—§ç‰ˆæ§åˆ¶å°ï¼‰
 //void Renderer::showCursor() const
 //{
 //	std::cout << "\033[?25h";
 //}
 
-// ÒÆ¶¯¹â±ê
+// ç§»åŠ¨å…‰æ ‡
 void Renderer::moveCursor(int16_t _x, int16_t _y) const
 {
 	COORD coord = { _x, _y };
 	SetConsoleCursorPosition(_handle, coord);
 }
 
-// ÒÆ¶¯¹â±ê£¨²»¼æÈİ¾É°æ¿ØÖÆÌ¨£©
+// ç§»åŠ¨å…‰æ ‡ï¼ˆä¸å…¼å®¹æ—§ç‰ˆæ§åˆ¶å°ï¼‰
 //void Renderer::moveCursor(int16_t _x, int16_t _y) const
 //{
 //	std::cout << "\033[" << _y << ';' << _x << 'H';
-//	// \033[0m ½ûÓÃËùÓĞÊôĞÔ
-//	// \033[1m ¸ßÁÁ
-//	// \033[4m ÏÂ»®Ïß
-//	// \033[7m ·´ÏÔ£¨½»»»Ç°¾°É«Óë±³¾°É«£©
-//	// \033[nA ¹â±êÉÏÒÆnĞĞ
-//	// \033[nB ¹â±êÏÂÒÆnĞĞ
-//	// \033[nC ¹â±êÓÒÒÆnÁĞ
-//	// \033[nD ¹â±ê×óÒÆnÁĞ
-//	// \033[K Çå³ı¹â±êÖÁĞĞÎ²µÄÄÚÈİ£¬¼´»ùÓÚµ±Ç°ÊôĞÔÌî³ä¹â±êÖÁĞĞÎ²
-//	// \033[s ±£´æ¹â±êÎ»ÖÃ
-//	// \033[u »Ö¸´¹â±êÎ»ÖÃ
+//	// \033[0m ç¦ç”¨æ‰€æœ‰å±æ€§
+//	// \033[1m é«˜äº®
+//	// \033[4m ä¸‹åˆ’çº¿
+//	// \033[7m åæ˜¾ï¼ˆäº¤æ¢å‰æ™¯è‰²ä¸èƒŒæ™¯è‰²ï¼‰
+//	// \033[nA å…‰æ ‡ä¸Šç§»nè¡Œ
+//	// \033[nB å…‰æ ‡ä¸‹ç§»nè¡Œ
+//	// \033[nC å…‰æ ‡å³ç§»nåˆ—
+//	// \033[nD å…‰æ ‡å·¦ç§»nåˆ—
+//	// \033[K æ¸…é™¤å…‰æ ‡è‡³è¡Œå°¾çš„å†…å®¹ï¼Œå³åŸºäºå½“å‰å±æ€§å¡«å……å…‰æ ‡è‡³è¡Œå°¾
+//	// \033[s ä¿å­˜å…‰æ ‡ä½ç½®
+//	// \033[u æ¢å¤å…‰æ ‡ä½ç½®
 //}
 
 Renderer::Renderer(int16_t _row, int16_t _column, const char *_title)
@@ -124,48 +124,48 @@ Renderer::Renderer(int16_t _row, int16_t _column, const char *_title)
 	init(_title);
 }
 
-// Çå¿Õ¿ØÖÆÌ¨´°¿Ú
+// æ¸…ç©ºæ§åˆ¶å°çª—å£
 //void Renderer::clearScreen() const
 //{
 //	std::system("cls");
 //}
 
-// Çå¿Õ¿ØÖÆÌ¨´°¿Ú
+// æ¸…ç©ºæ§åˆ¶å°çª—å£
 void Renderer::clearScreen() const
 {
-	// »ñÈ¡¿ØÖÆÌ¨»º³åÇøĞÅÏ¢
+	// è·å–æ§åˆ¶å°ç¼“å†²åŒºä¿¡æ¯
 	CONSOLE_SCREEN_BUFFER_INFO info;
 	GetConsoleScreenBufferInfo(_handle, &info);
 
-	// ÒÔ¿Õ¸ñÌî³äÕû¸ö¿ØÖÆÌ¨
-	DWORD size = info.dwSize.X * info.dwSize.Y; // »º³åÇøµÄ×Ö·ûÈİÄÉÁ¿
+	// ä»¥ç©ºæ ¼å¡«å……æ•´ä¸ªæ§åˆ¶å°
+	DWORD size = info.dwSize.X * info.dwSize.Y; // ç¼“å†²åŒºçš„å­—ç¬¦å®¹çº³é‡
 	DWORD number;
 	COORD coord = { 0, 0 };
 	FillConsoleOutputCharacter(_handle, \
 		static_cast<TCHAR>(' '), size, coord, &number);
 
-	// ÔÙ´Î»ñÈ¡»º³åÇøĞÅÏ¢
+	// å†æ¬¡è·å–ç¼“å†²åŒºä¿¡æ¯
 	GetConsoleScreenBufferInfo(_handle, &info);
 
-	// ÒÔÄ¬ÈÏÑÕÉ«Ìî³ä¿ØÖÆÌ¨
+	// ä»¥é»˜è®¤é¢œè‰²å¡«å……æ§åˆ¶å°
 	FillConsoleOutputAttribute(_handle, \
 		info.wAttributes, size, coord, &number);
 
-	// ÒÆ¶¯¹â±êÖÁ(0, 0)
+	// ç§»åŠ¨å…‰æ ‡è‡³(0, 0)
 	SetConsoleCursorPosition(_handle, coord);
 }
 
-// Çå¿Õ¿ØÖÆÌ¨´°¿Ú£¨²»¼æÈİ¾É°æ¿ØÖÆÌ¨£©
+// æ¸…ç©ºæ§åˆ¶å°çª—å£ï¼ˆä¸å…¼å®¹æ—§ç‰ˆæ§åˆ¶å°ï¼‰
 //void Renderer::clearScreen() const
 //{
 //	std::cout << "\033[2J" << "\033[0;0H";
 //}
 
 /*
- * ÉèÖÃ´°¿ÚÑÕÉ«
- * ²ÎÊı£º
- *     _background    ±³¾°É«
- *     _foreground    Ç°¾°É«
+ * è®¾ç½®çª—å£é¢œè‰²
+ * å‚æ•°ï¼š
+ *     _background    èƒŒæ™¯è‰²
+ *     _foreground    å‰æ™¯è‰²
  */
 //void Renderer::setScreenColor(uint16_t _background, uint16_t _foreground) const
 //{
@@ -174,92 +174,92 @@ void Renderer::clearScreen() const
 //	system(output.str().c_str());
 //}
 
-// ÉèÖÃ´°¿ÚÑÕÉ«
+// è®¾ç½®çª—å£é¢œè‰²
 void Renderer::setScreenColor(uint16_t _background, uint16_t _foreground) const
 {
-	// »ñÈ¡»º³åÇøĞÅÏ¢
+	// è·å–ç¼“å†²åŒºä¿¡æ¯
 	CONSOLE_SCREEN_BUFFER_INFO info;
 	GetConsoleScreenBufferInfo(_handle, &info);
 
-	// ÒÔÄ¬ÈÏÑÕÉ«Ìî³ä¿ØÖÆÌ¨
-	DWORD size = info.dwSize.X * info.dwSize.Y; // »º³åÇøµÄ×Ö·ûÈİÄÉÁ¿
+	// ä»¥é»˜è®¤é¢œè‰²å¡«å……æ§åˆ¶å°
+	DWORD size = info.dwSize.X * info.dwSize.Y; // ç¼“å†²åŒºçš„å­—ç¬¦å®¹çº³é‡
 	DWORD number;
 	COORD coord = { 0, 0 };
 	FillConsoleOutputAttribute(_handle, \
 		_background, size, coord, &number);
 
-	// ÒÆ¶¯¹â±êÖÁ(0, 0)
+	// ç§»åŠ¨å…‰æ ‡è‡³(0, 0)
 	SetConsoleCursorPosition(_handle, coord);
 
-	// ÉèÖÃ×ÖÌåÑÕÉ«
+	// è®¾ç½®å­—ä½“é¢œè‰²
 	setTextColor(_foreground, _background);
 }
 
 /*
- * ½»»»ºìÉ«Î»ºÍÀ¶É«Î»
- * ²ÎÊı£º
- *     _color    ÑÕÉ«
- *     _offset   ×óÏòÆ«ÒÆ
+ * äº¤æ¢çº¢è‰²ä½å’Œè“è‰²ä½
+ * å‚æ•°ï¼š
+ *     _color    é¢œè‰²
+ *     _offset   å·¦å‘åç§»
  */
 //static uint16_t swapRedAndBlue(uint16_t _color, uint16_t _offset) noexcept
 //{
-//	// »ñÈ¡ºìÉ«Î»»òÀ¶É«Î»
+//	// è·å–çº¢è‰²ä½æˆ–è“è‰²ä½
 //	uint16_t temp = _color & 0x1 << _offset;
 //
-//	// ÇåÁãÉ«Î»²¢¸³ÖµÎªÁíÒ»É«Î»
+//	// æ¸…é›¶è‰²ä½å¹¶èµ‹å€¼ä¸ºå¦ä¸€è‰²ä½
 //	_color = _color & ~(0x1 << _offset) | (_color & 0x4 << _offset) >> 2;
 //	return _color & ~(0x4 << _offset) | temp << 2;
 //}
 
-// ÉèÖÃ´°¿ÚÑÕÉ«£¨²»¼æÈİ¾É°æ¿ØÖÆÌ¨£©
+// è®¾ç½®çª—å£é¢œè‰²ï¼ˆä¸å…¼å®¹æ—§ç‰ˆæ§åˆ¶å°ï¼‰
 //void Renderer::setScreenColor(uint16_t _background, uint16_t _foreground) const
 //{
-//	// ½»»»É«Î»
+//	// äº¤æ¢è‰²ä½
 //	uint16_t color = swapRedAndBlue(_background, 4);
 //
-//	// ÉèÖÃ±³¾°É«
+//	// è®¾ç½®èƒŒæ™¯è‰²
 //	std::ostringstream output;
 //	output << "\033[" << (color >> 7 & 0x01) << ";4" << (color >> 4 & 0x07) << 'm';
 //	std::cout << output.str();
 //
-//	// Ìî³ä´°¿Ú
+//	// å¡«å……çª—å£
 //	clearScreen();
 //
-//	// Çå³ıÉèÖÃ
+//	// æ¸…é™¤è®¾ç½®
 //	std::cout << "\033[0m";
 //
-//	// ÉèÖÃ×ÖÌåÑÕÉ«
+//	// è®¾ç½®å­—ä½“é¢œè‰²
 //	setTextColor(_foreground, _background);
 //}
 
-// ÉèÖÃÎÄ±¾ÑÕÉ«
+// è®¾ç½®æ–‡æœ¬é¢œè‰²
 void Renderer::setTextColor(uint16_t _foreground, uint16_t _background) const
 {
 	SetConsoleTextAttribute(_handle, _foreground & 0x0F | _background & 0xF0);
 }
 
-// ÉèÖÃÎÄ±¾ÑÕÉ«£¨²»¼æÈİ¾É°æ¿ØÖÆÌ¨£©
+// è®¾ç½®æ–‡æœ¬é¢œè‰²ï¼ˆä¸å…¼å®¹æ—§ç‰ˆæ§åˆ¶å°ï¼‰
 //void Renderer::setTextColor(uint16_t _foreground, uint16_t _background) const
 //{
-//	// ½»»»É«Î»
+//	// äº¤æ¢è‰²ä½
 //	_foreground = swapRedAndBlue(_foreground, 0);
 //	_background = swapRedAndBlue(_background, 4);
 //
-//	// ÉèÖÃ±³¾°É«ÓëÇ°¾°É«
+//	// è®¾ç½®èƒŒæ™¯è‰²ä¸å‰æ™¯è‰²
 //	std::ostringstream output;
 //	output << "\033[" << (_background >> 7 & 0x01) << ";4" << (_background >> 4 & 0x07) << 'm'
 //		<< "\033[" << (_foreground >> 3 & 0x01) << ";3" << (_foreground & 0x07) << 'm';
 //	std::cout << output.str();
 //}
 
-// Êä³öÎÄ±¾
+// è¾“å‡ºæ–‡æœ¬
 void Renderer::outText(int16_t _x, int16_t _y, const char *_text) const
 {
 	moveCursor(_x, _y);
 	std::cout << _text;
 }
 
-// Êä³öÎÄ±¾ÖÁÖ¸¶¨·¶Î§
+// è¾“å‡ºæ–‡æœ¬è‡³æŒ‡å®šèŒƒå›´
 void Renderer::outText(int16_t _left, int16_t _right, int16_t _up, int16_t _down, const char *_text) const
 {
 	auto length = static_cast<decltype(_left)>(std::strlen(_text));

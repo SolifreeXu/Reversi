@@ -1,4 +1,4 @@
-#include "Chessboard.hpp"
+ï»¿#include "Chessboard.hpp"
 #include "Renderer.hpp"
 
 #include <Windows.h>
@@ -11,18 +11,18 @@
 
 REVERSI_BEGIN
 
-// ÁÁÀ¶É«±³¾°
+// äº®è“è‰²èƒŒæ™¯
 static constexpr uint16_t SCREEN = BACKGROUND_BLUE | BACKGROUND_INTENSITY;
-// ÁÁºìÉ«Ç°¾°
+// äº®çº¢è‰²å‰æ™¯
 static constexpr uint16_t PROMPT = FOREGROUND_RED | FOREGROUND_INTENSITY;
-// ºìÉ«Ç°¾°£¬ÁÁ»ÆÉ«±³¾°
+// çº¢è‰²å‰æ™¯ï¼Œäº®é»„è‰²èƒŒæ™¯
 static constexpr uint16_t BOARD[2] = { FOREGROUND_RED, BACKGROUND_GREEN | BACKGROUND_RED | BACKGROUND_INTENSITY };
-// ÁÁ»ÆÉ«±³¾°£¬ÁÁ°×É«Ç°¾°£¬ºÚÉ«Ç°¾°
+// äº®é»„è‰²èƒŒæ™¯ï¼Œäº®ç™½è‰²å‰æ™¯ï¼Œé»‘è‰²å‰æ™¯
 static constexpr uint16_t CHESS[3] = { BACKGROUND_GREEN | BACKGROUND_RED | BACKGROUND_INTENSITY, 0, FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_INTENSITY };
 
-// ÏÂ±êËµÃ÷·û
+// ä¸‹æ ‡è¯´æ˜ç¬¦
 const Chessboard::Index Chessboard::_index = Chessboard::Index();
-// ×ø±êËµÃ÷·û
+// åæ ‡è¯´æ˜ç¬¦
 const Chessboard::Coordinate Chessboard::_coordinate = Chessboard::Coordinate();
 
 std::istream& operator >>(std::istream& _input, Chessboard& _chessboard)
@@ -35,27 +35,27 @@ std::ostream& operator <<(std::ostream& _output, const Chessboard& _chessboard)
 	return _output.write(reinterpret_cast<const char*>(_chessboard._states), sizeof _chessboard._states);
 }
 
-// ×ª»»×ø±êÎªÏÂ±ê
+// è½¬æ¢åæ ‡ä¸ºä¸‹æ ‡
 inline void Chessboard::getIndex(int16_t _x, int16_t _y, int16_t& _row, int16_t& _column) const noexcept
 {
 	_row = (_y - (_up + 1)) >> 1;
 	_column = (_x - (_left + 2)) >> 2;
 }
 
-// ×ª»»ÏÂ±êÎª×ø±ê
+// è½¬æ¢ä¸‹æ ‡ä¸ºåæ ‡
 inline void Chessboard::getCoord(int16_t _row, int16_t _column, int16_t& _x, int16_t& _y) const noexcept
 {
 	_x = (_column << 2) + (_left + 2);
 	_y = (_row << 1) + (_up + 1);
 }
 
-// ÅĞ¶ÏÖ¸¶¨ÏÂ±êÊÇ·ñÆå×Ó
+// åˆ¤æ–­æŒ‡å®šä¸‹æ ‡æ˜¯å¦æ£‹å­
 inline bool Chessboard::isChess(Index _index, int16_t _row, int16_t _column) const noexcept
 {
 	return _states[_row][_column] != EMPTY;
 }
 
-// ÅĞ¶ÏÖ¸¶¨×ø±êÊÇ·ñÆå×Ó
+// åˆ¤æ–­æŒ‡å®šåæ ‡æ˜¯å¦æ£‹å­
 bool Chessboard::isChess(Coordinate _coordinate, int16_t _x, int16_t _y) const noexcept
 {
 	int16_t row, column;
@@ -63,19 +63,19 @@ bool Chessboard::isChess(Coordinate _coordinate, int16_t _x, int16_t _y) const n
 	return isChess(_index, row, column);
 }
 
-// ÉèÖÃÆå×Ó×´Ì¬
+// è®¾ç½®æ£‹å­çŠ¶æ€
 inline void Chessboard::setChess(int16_t _row, int16_t _column, State _state) noexcept
 {
 	_states[_row][_column] = _state;
 }
 
-// ÉèÖÃ¹â±êÑÕÉ«
+// è®¾ç½®å…‰æ ‡é¢œè‰²
 void Chessboard::setCursorColor() const
 {
 	_renderer.setTextColor(CHESS[1], CHESS[0]);
 }
 
-// ÉèÖÃÆå×ÓÑÕÉ«
+// è®¾ç½®æ£‹å­é¢œè‰²
 void Chessboard::setChessColor(int16_t _x, int16_t _y) const
 {
 	int16_t row, column;
@@ -83,15 +83,15 @@ void Chessboard::setChessColor(int16_t _x, int16_t _y) const
 	_renderer.setTextColor(CHESS[_states[row][column]], CHESS[0]);
 }
 
-// »æÖÆÆåÅÌ
+// ç»˜åˆ¶æ£‹ç›˜
 void Chessboard::drawChessboard()
 {
 	_renderer.setTextColor(BOARD[0], BOARD[1]);
 	_stream.seekp(0, _stream.beg);
-	_stream << "©³";
+	_stream << "â”";
 	for (uint8_t j = COLUMN - 1; j > 0; --j)
-		_stream << "©¥©×";
-	_stream << "©¥©·";
+		_stream << "â”â”³";
+	_stream << "â”â”“";
 	const int16_t& x = _left;
 	int16_t y = _up;
 	_renderer.outText(x, y, _stream.str().c_str());
@@ -100,33 +100,33 @@ void Chessboard::drawChessboard()
 	{
 		_stream.seekp(0, _stream.beg);
 		for (uint8_t j = 0; j < COLUMN; ++j)
-			_stream << "©§  ";
-		_stream << "©§";
+			_stream << "â”ƒ  ";
+		_stream << "â”ƒ";
 		_renderer.outText(x, ++y, _stream.str().c_str());
 
 		_stream.seekp(0, _stream.beg);
-		_stream << "©Ç";
+		_stream << "â”£";
 		for (uint8_t j = COLUMN - 1; j > 0; --j)
-			_stream << "©¥©ï";
-		_stream << "©¥©Ï";
+			_stream << "â”â•‹";
+		_stream << "â”â”«";
 		_renderer.outText(x, ++y, _stream.str().c_str());
 	}
 
 	_stream.seekp(0, _stream.beg);
 	for (uint8_t j = 0; j < COLUMN; ++j)
-		_stream << "©§  ";
-	_stream << "©§";
+		_stream << "â”ƒ  ";
+	_stream << "â”ƒ";
 	_renderer.outText(x, ++y, _stream.str().c_str());
 
 	_stream.seekp(0, _stream.beg);
-	_stream << "©»";
+	_stream << "â”—";
 	for (uint8_t j = COLUMN - 1; j > 0; --j)
-		_stream << "©¥©ß";
-	_stream << "©¥©¿";
+		_stream << "â”â”»";
+	_stream << "â”â”›";
 	_renderer.outText(x, ++y, _stream.str().c_str());
 }
 
-// »æÖÆËùÓĞÆå×Ó
+// ç»˜åˆ¶æ‰€æœ‰æ£‹å­
 void Chessboard::drawChess() const
 {
 	for (int16_t row = 0, column, x, y; row < ROW; ++row)
@@ -135,11 +135,11 @@ void Chessboard::drawChess() const
 			{
 				getCoord(row, column, x, y);
 				setChessColor(x, y);
-				_renderer.outText(x, y, "¡ñ");
+				_renderer.outText(x, y, "â—");
 			}
 }
 
-// ×ª»»µ¥¸öÆå×Ó
+// è½¬æ¢å•ä¸ªæ£‹å­
 void Chessboard::convertOne(int16_t _row, int16_t _column, State _state)
 {
 	Sleep(40);
@@ -147,28 +147,28 @@ void Chessboard::convertOne(int16_t _row, int16_t _column, State _state)
 	int16_t x, y;
 	getCoord(_row, _column, x, y);
 	setChessColor(x, y);
-	_renderer.outText(x, y, "¡ñ");
+	_renderer.outText(x, y, "â—");
 }
 
-// ×ª»»ÉÏ·½Æå×Ó
+// è½¬æ¢ä¸Šæ–¹æ£‹å­
 bool Chessboard::convertUp(int16_t _row, int16_t _column, bool _judgmental)
 {
-	// ÎŞ×ª»»¿Õ¼ä
+	// æ— è½¬æ¢ç©ºé—´
 	if (_row <= 1)
 		return false;
 
-	// ÏòÉÏ·½±éÀú£¬Ö±µ½×Ô¼ºµÄÆå×Ó»òÕß¿ÕÎ»ÎªÖ¹
+	// å‘ä¸Šæ–¹éå†ï¼Œç›´åˆ°è‡ªå·±çš„æ£‹å­æˆ–è€…ç©ºä½ä¸ºæ­¢
 	int16_t m = _row - 1;
 	for (; m >= 0; --m)
 		if (_states[m][_column] == _states[_row][_column] \
 			|| _states[m][_column] == EMPTY)
 			break;
 
-	// ³¬³ö±ß½ç»òÕß²»¿É×ª»»¶ÔÊÖÆå×Ó
+	// è¶…å‡ºè¾¹ç•Œæˆ–è€…ä¸å¯è½¬æ¢å¯¹æ‰‹æ£‹å­
 	if (m < 0 || m == _row - 1 || _states[m][_column] == EMPTY)
 		return false;
 
-	// Èô·Ç³¢ÊÔ×ª»»£¬ÔòÒÀ´Î×ª»»Æå×Ó
+	// è‹¥éå°è¯•è½¬æ¢ï¼Œåˆ™ä¾æ¬¡è½¬æ¢æ£‹å­
 	if (!_judgmental)
 	{
 		for (int16_t i = _row - 1; i > m; --i)
@@ -177,25 +177,25 @@ bool Chessboard::convertUp(int16_t _row, int16_t _column, bool _judgmental)
 	return true;
 }
 
-// ×ª»»ÏÂ·½Æå×Ó
+// è½¬æ¢ä¸‹æ–¹æ£‹å­
 bool Chessboard::convertDown(int16_t _row, int16_t _column, bool _judgmental)
 {
-	// ÎŞ×ª»»¿Õ¼ä
+	// æ— è½¬æ¢ç©ºé—´
 	if (_row >= ROW - 2)
 		return false;
 
-	// ÏòÏÂ·½±éÀú£¬Ö±µ½×Ô¼ºµÄÆå×Ó»òÕß¿ÕÎ»ÎªÖ¹
+	// å‘ä¸‹æ–¹éå†ï¼Œç›´åˆ°è‡ªå·±çš„æ£‹å­æˆ–è€…ç©ºä½ä¸ºæ­¢
 	int16_t m = _row + 1;
 	for (; m < ROW; ++m)
 		if (_states[m][_column] == _states[_row][_column] \
 			|| _states[m][_column] == EMPTY)
 			break;
 
-	// ³¬³ö±ß½ç»òÕß²»¿É×ª»»¶ÔÊÖÆå×Ó
+	// è¶…å‡ºè¾¹ç•Œæˆ–è€…ä¸å¯è½¬æ¢å¯¹æ‰‹æ£‹å­
 	if (m >= ROW || m == _row + 1 || _states[m][_column] == EMPTY)
 		return false;
 
-	// Èô·Ç³¢ÊÔ×ª»»£¬ÔòÒÀ´Î×ª»»Æå×Ó
+	// è‹¥éå°è¯•è½¬æ¢ï¼Œåˆ™ä¾æ¬¡è½¬æ¢æ£‹å­
 	if (!_judgmental)
 	{
 		for (int16_t i = _row + 1; i < m; ++i)
@@ -204,25 +204,25 @@ bool Chessboard::convertDown(int16_t _row, int16_t _column, bool _judgmental)
 	return true;
 }
 
-// ×ª»»×ó·½Æå×Ó
+// è½¬æ¢å·¦æ–¹æ£‹å­
 bool Chessboard::convertLeft(int16_t _row, int16_t _column, bool _judgmental)
 {
-	// ÎŞ×ª»»¿Õ¼ä
+	// æ— è½¬æ¢ç©ºé—´
 	if (_column <= 1)
 		return false;
 
-	// Ïò×ó·½±éÀú£¬Ö±µ½×Ô¼ºµÄÆå×Ó»òÕß¿ÕÎ»ÎªÖ¹
+	// å‘å·¦æ–¹éå†ï¼Œç›´åˆ°è‡ªå·±çš„æ£‹å­æˆ–è€…ç©ºä½ä¸ºæ­¢
 	int16_t n = _column - 1;
 	for (; n >= 0; --n)
 		if (_states[_row][n] == _states[_row][_column] \
 			|| _states[_row][n] == EMPTY)
 			break;
 
-	// ³¬³ö±ß½ç»òÕß²»¿É×ª»»¶ÔÊÖÆå×Ó
+	// è¶…å‡ºè¾¹ç•Œæˆ–è€…ä¸å¯è½¬æ¢å¯¹æ‰‹æ£‹å­
 	if (n < 0 || n == _column - 1 || _states[_row][n] == EMPTY)
 		return false;
 
-	// Èô·Ç³¢ÊÔ×ª»»£¬ÔòÒÀ´Î×ª»»Æå×Ó
+	// è‹¥éå°è¯•è½¬æ¢ï¼Œåˆ™ä¾æ¬¡è½¬æ¢æ£‹å­
 	if (!_judgmental)
 	{
 		for (int16_t j = _column - 1; j > n; --j)
@@ -231,25 +231,25 @@ bool Chessboard::convertLeft(int16_t _row, int16_t _column, bool _judgmental)
 	return true;
 }
 
-// ×ª»»ÓÒ·½Æå×Ó
+// è½¬æ¢å³æ–¹æ£‹å­
 bool Chessboard::convertRight(int16_t _row, int16_t _column, bool _judgmental)
 {
-	// ÎŞ×ª»»¿Õ¼ä
+	// æ— è½¬æ¢ç©ºé—´
 	if (_column >= COLUMN - 2)
 		return false;
 
-	// ÏòÓÒ·½±éÀú£¬Ö±µ½×Ô¼ºµÄÆå×Ó»òÕß¿ÕÎ»ÎªÖ¹
+	// å‘å³æ–¹éå†ï¼Œç›´åˆ°è‡ªå·±çš„æ£‹å­æˆ–è€…ç©ºä½ä¸ºæ­¢
 	int16_t n = _column + 1;
 	for (; n < COLUMN; ++n)
 		if (_states[_row][n] == _states[_row][_column] \
 			|| _states[_row][n] == EMPTY)
 			break;
 
-	// ³¬³ö±ß½ç»òÕß²»¿É×ª»»¶ÔÊÖÆå×Ó
+	// è¶…å‡ºè¾¹ç•Œæˆ–è€…ä¸å¯è½¬æ¢å¯¹æ‰‹æ£‹å­
 	if (n >= COLUMN || n == _column + 1 || _states[_row][n] == EMPTY)
 		return false;
 
-	// Èô·Ç³¢ÊÔ×ª»»£¬ÔòÒÀ´Î×ª»»Æå×Ó
+	// è‹¥éå°è¯•è½¬æ¢ï¼Œåˆ™ä¾æ¬¡è½¬æ¢æ£‹å­
 	if (!_judgmental)
 	{
 		for (int16_t j = _column + 1; j < n; ++j)
@@ -258,25 +258,25 @@ bool Chessboard::convertRight(int16_t _row, int16_t _column, bool _judgmental)
 	return true;
 }
 
-// ×ª»»×óÉÏÆå×Ó
+// è½¬æ¢å·¦ä¸Šæ£‹å­
 bool Chessboard::convertLeftUp(int16_t _row, int16_t _column, bool _judgmental)
 {
-	// ÎŞ×ª»»¿Õ¼ä
+	// æ— è½¬æ¢ç©ºé—´
 	if (_row <= 1 || _column <= 1)
 		return false;
 
-	// Ïò×óÉÏ·½±éÀú£¬Ö±µ½×Ô¼ºµÄÆå×Ó»òÕß¿ÕÎ»ÎªÖ¹
+	// å‘å·¦ä¸Šæ–¹éå†ï¼Œç›´åˆ°è‡ªå·±çš„æ£‹å­æˆ–è€…ç©ºä½ä¸ºæ­¢
 	int16_t m = _row - 1, n = _column - 1;
 	for (; m >= 0 && n >= 0; --m, --n)
 		if (_states[m][n] == _states[_row][_column] \
 			|| _states[m][n] == EMPTY)
 			break;
 
-	// ³¬³ö±ß½ç»òÕß²»¿É×ª»»¶ÔÊÖÆå×Ó
+	// è¶…å‡ºè¾¹ç•Œæˆ–è€…ä¸å¯è½¬æ¢å¯¹æ‰‹æ£‹å­
 	if (m < 0 || n < 0 || m == _row - 1 || _states[m][n] == EMPTY)
 		return false;
 
-	// Èô·Ç³¢ÊÔ×ª»»£¬ÔòÒÀ´Î×ª»»Æå×Ó
+	// è‹¥éå°è¯•è½¬æ¢ï¼Œåˆ™ä¾æ¬¡è½¬æ¢æ£‹å­
 	if (!_judgmental)
 	{
 		for (int16_t i = _row - 1, j = _column - 1; i > m; --i, --j)
@@ -285,25 +285,25 @@ bool Chessboard::convertLeftUp(int16_t _row, int16_t _column, bool _judgmental)
 	return true;
 }
 
-// ×ª»»ÓÒÉÏÆå×Ó
+// è½¬æ¢å³ä¸Šæ£‹å­
 bool Chessboard::convertRightUp(int16_t _row, int16_t _column, bool _judgmental)
 {
-	// ÎŞ×ª»»¿Õ¼ä
+	// æ— è½¬æ¢ç©ºé—´
 	if (_row <= 1 || _column >= COLUMN - 2)
 		return false;
 
-	// ÏòÓÒÉÏ·½±éÀú£¬Ö±µ½×Ô¼ºµÄÆå×Ó»òÕß¿ÕÎ»ÎªÖ¹
+	// å‘å³ä¸Šæ–¹éå†ï¼Œç›´åˆ°è‡ªå·±çš„æ£‹å­æˆ–è€…ç©ºä½ä¸ºæ­¢
 	int16_t m = _row - 1, n = _column + 1;
 	for (; m >= 0 && n < COLUMN; --m, ++n)
 		if (_states[m][n] == _states[_row][_column] \
 			|| _states[m][n] == EMPTY)
 			break;
 
-	// ³¬³ö±ß½ç»òÕß²»¿É×ª»»¶ÔÊÖÆå×Ó
+	// è¶…å‡ºè¾¹ç•Œæˆ–è€…ä¸å¯è½¬æ¢å¯¹æ‰‹æ£‹å­
 	if (m < 0 || n >= COLUMN || m == _row - 1 || _states[m][n] == EMPTY)
 		return false;
 
-	// Èô·Ç³¢ÊÔ×ª»»£¬ÔòÒÀ´Î×ª»»Æå×Ó
+	// è‹¥éå°è¯•è½¬æ¢ï¼Œåˆ™ä¾æ¬¡è½¬æ¢æ£‹å­
 	if (!_judgmental)
 	{
 		for (int16_t i = _row - 1, j = _column + 1; i > m; --i, ++j)
@@ -312,25 +312,25 @@ bool Chessboard::convertRightUp(int16_t _row, int16_t _column, bool _judgmental)
 	return true;
 }
 
-// ×ª»»×óÏÂÆå×Ó
+// è½¬æ¢å·¦ä¸‹æ£‹å­
 bool Chessboard::convertLeftDown(int16_t _row, int16_t _column, bool _judgmental)
 {
-	// ÎŞ×ª»»¿Õ¼ä
+	// æ— è½¬æ¢ç©ºé—´
 	if (_row >= ROW - 2 || _column <= 1)
 		return false;
 
-	// Ïò×óÏÂ·½±éÀú£¬Ö±µ½×Ô¼ºµÄÆå×Ó»òÕß¿ÕÎ»ÎªÖ¹
+	// å‘å·¦ä¸‹æ–¹éå†ï¼Œç›´åˆ°è‡ªå·±çš„æ£‹å­æˆ–è€…ç©ºä½ä¸ºæ­¢
 	int16_t m = _row + 1, n = _column - 1;
 	for (; m < ROW && n >= 0; ++m, --n)
 		if (_states[m][n] == _states[_row][_column] \
 			|| _states[m][n] == EMPTY)
 			break;
 
-	// ³¬³ö±ß½ç»òÕß²»¿É×ª»»¶ÔÊÖÆå×Ó
+	// è¶…å‡ºè¾¹ç•Œæˆ–è€…ä¸å¯è½¬æ¢å¯¹æ‰‹æ£‹å­
 	if (m >= ROW || n < 0 || m == _row + 1 || _states[m][n] == EMPTY)
 		return false;
 
-	// Èô·Ç³¢ÊÔ×ª»»£¬ÔòÒÀ´Î×ª»»Æå×Ó
+	// è‹¥éå°è¯•è½¬æ¢ï¼Œåˆ™ä¾æ¬¡è½¬æ¢æ£‹å­
 	if (!_judgmental)
 	{
 		for (int16_t i = _row + 1, j = _column - 1; i < m; ++i, --j)
@@ -339,25 +339,25 @@ bool Chessboard::convertLeftDown(int16_t _row, int16_t _column, bool _judgmental
 	return true;
 }
 
-// ×ª»»ÓÒÏÂÆå×Ó
+// è½¬æ¢å³ä¸‹æ£‹å­
 bool Chessboard::convertRightDown(int16_t _row, int16_t _column, bool _judgmental)
 {
-	// ÎŞ×ª»»¿Õ¼ä
+	// æ— è½¬æ¢ç©ºé—´
 	if (_row >= ROW - 2 || _column >= COLUMN - 2)
 		return false;
 
-	// ÏòÓÒÏÂ·½±éÀú£¬Ö±µ½×Ô¼ºµÄÆå×Ó»òÕß¿ÕÎ»ÎªÖ¹
+	// å‘å³ä¸‹æ–¹éå†ï¼Œç›´åˆ°è‡ªå·±çš„æ£‹å­æˆ–è€…ç©ºä½ä¸ºæ­¢
 	int16_t m = _row + 1, n = _column + 1;
 	for (; m < ROW && n < COLUMN; ++m, ++n)
 		if (_states[m][n] == _states[_row][_column] \
 			|| _states[m][n] == EMPTY)
 			break;
 
-	// ³¬³ö±ß½ç»òÕß²»¿É×ª»»¶ÔÊÖÆå×Ó
+	// è¶…å‡ºè¾¹ç•Œæˆ–è€…ä¸å¯è½¬æ¢å¯¹æ‰‹æ£‹å­
 	if (m >= ROW || n >= COLUMN || m == _row + 1 || _states[m][n] == EMPTY)
 		return false;
 
-	// Èô·Ç³¢ÊÔ×ª»»£¬ÔòÒÀ´Î×ª»»Æå×Ó
+	// è‹¥éå°è¯•è½¬æ¢ï¼Œåˆ™ä¾æ¬¡è½¬æ¢æ£‹å­
 	if (!_judgmental)
 	{
 		for (int16_t i = _row + 1, j = _column + 1; i < m; ++i, ++j)
@@ -366,86 +366,86 @@ bool Chessboard::convertRightDown(int16_t _row, int16_t _column, bool _judgmenta
 	return true;
 }
 
-// ×ª»»Æå×Ó
+// è½¬æ¢æ£‹å­
 bool Chessboard::convert(int16_t _row, int16_t _column, bool _judgmental)
 {
-	// ×ª»»ÉÏ·½Æå×Ó
+	// è½¬æ¢ä¸Šæ–¹æ£‹å­
 	bool result = convertUp(_row, _column, _judgmental);
 	bool convertible = result;
 	if (_judgmental && convertible)
 		return convertible;
 
-	// ×ª»»ÏÂ·½Æå×Ó
+	// è½¬æ¢ä¸‹æ–¹æ£‹å­
 	result = convertDown(_row, _column, _judgmental);
 	convertible = convertible || result;
 	if (_judgmental && convertible)
 		return convertible;
 
-	// ×ª»»×ó·½Æå×Ó
+	// è½¬æ¢å·¦æ–¹æ£‹å­
 	result = convertLeft(_row, _column, _judgmental);
 	convertible = convertible || result;
 	if (_judgmental && convertible)
 		return convertible;
 
-	// ×ª»»ÓÒ·½Æå×Ó
+	// è½¬æ¢å³æ–¹æ£‹å­
 	result = convertRight(_row, _column, _judgmental);
 	convertible = convertible || result;
 	if (_judgmental && convertible)
 		return convertible;
 
-	// ×ª»»×óÉÏÆå×Ó
+	// è½¬æ¢å·¦ä¸Šæ£‹å­
 	result = convertLeftUp(_row, _column, _judgmental);
 	convertible = convertible || result;
 	if (_judgmental && convertible)
 		return convertible;
 
-	// ×ª»»ÓÒÉÏÆå×Ó
+	// è½¬æ¢å³ä¸Šæ£‹å­
 	result = convertRightUp(_row, _column, _judgmental);
 	convertible = convertible || result;
 	if (_judgmental && convertible)
 		return convertible;
 
-	// ×ª»»×óÏÂÆå×Ó
+	// è½¬æ¢å·¦ä¸‹æ£‹å­
 	result = convertLeftDown(_row, _column, _judgmental);
 	convertible = convertible || result;
 	if (_judgmental && convertible)
 		return convertible;
 
-	// ×ª»»ÓÒÏÂÆå×Ó
+	// è½¬æ¢å³ä¸‹æ£‹å­
 	result = convertRightDown(_row, _column, _judgmental);
 	convertible = convertible || result;
 	return convertible;
 }
 
-// µÈ´ı²Ù×÷
+// ç­‰å¾…æ“ä½œ
 void Chessboard::wait() const
 {
 	do
 	{
-		// ÏÔÊ¾¹â±ê
+		// æ˜¾ç¤ºå…‰æ ‡
 		setCursorColor();
-		_renderer.outText(_x, _y, "¡ó");
+		_renderer.outText(_x, _y, "â—‡");
 		Sleep(40);
 
-		// ¹â±êËùÔÚÎ»ÖÃÓĞÆå×Ó
+		// å…‰æ ‡æ‰€åœ¨ä½ç½®æœ‰æ£‹å­
 		if (isChess(_coordinate, _x, _y))
 		{
-			// ÏÔÊ¾Æå×Ó
+			// æ˜¾ç¤ºæ£‹å­
 			setChessColor(_x, _y);
-			_renderer.outText(_x, _y, "¡ñ");
+			_renderer.outText(_x, _y, "â—");
 			Sleep(40);
 		}
-	} while (!_kbhit()); // °´¼üÍË³öÑ­»·
+	} while (!_kbhit()); // æŒ‰é”®é€€å‡ºå¾ªç¯
 
-	// ¹â±êËùÔÚÎ»ÖÃÎŞÆå×Ó
+	// å…‰æ ‡æ‰€åœ¨ä½ç½®æ— æ£‹å­
 	if (!isChess(_coordinate, _x, _y))
-		_renderer.outText(_x, _y, "  "); // Çå³ı¹â±ê
+		_renderer.outText(_x, _y, "  "); // æ¸…é™¤å…‰æ ‡
 }
 
-// ´¦ÀíÊÂ¼ş
+// å¤„ç†äº‹ä»¶
 int Chessboard::handle()
 {
-	// ½ÓÊÕ°´¼ü
+	// æ¥æ”¶æŒ‰é”®
 	bool even = false;
 	int key = _getch();
 	if (key == 224)
@@ -454,34 +454,34 @@ int Chessboard::handle()
 		even = true;
 	}
 
-	// Èô·ÇË«¼üÔò·µ»Ø
+	// è‹¥éåŒé”®åˆ™è¿”å›
 	if (!even)
 		return key;
 
 	switch (key)
 	{
-	case UP: // ÉÏ·½Ïò¼ü
+	case UP: // ä¸Šæ–¹å‘é”®
 		key = 0;
 		_y -= 2;
 		if (_y < _up)
 			_y = _down - 2;
 		break;
 
-	case DOWN: // ÏÂ·½Ïò¼ü
+	case DOWN: // ä¸‹æ–¹å‘é”®
 		key = 0;
 		_y += 2;
 		if (_y >= _down)
 			_y = _up + 1;
 		break;
 
-	case LEFT: // ×ó·½Ïò¼ü
+	case LEFT: // å·¦æ–¹å‘é”®
 		key = 0;
 		_x -= 4;
 		if (_x < _left)
 			_x = _right - 4;
 		break;
 
-	case RIGHT: // ÓÒ·½Ïò¼ü
+	case RIGHT: // å³æ–¹å‘é”®
 		key = 0;
 		_x += 4;
 		if (_x >= _right)
@@ -497,21 +497,21 @@ int Chessboard::handle()
 Chessboard::Chessboard(Renderer& _renderer) noexcept
 	: _renderer(_renderer)
 {
-	// ¼ÆËãÆåÅÌµÄ¿í¶ÈºÍ¸ß¶È
+	// è®¡ç®—æ£‹ç›˜çš„å®½åº¦å’Œé«˜åº¦
 	_height = ROW + (ROW + 1);
 	_width = (COLUMN + COLUMN + 1) * 2;
 
-	// ¼ÆËãÆåÅÌ±ß½ç
+	// è®¡ç®—æ£‹ç›˜è¾¹ç•Œ
 	_up = (_renderer.getRow() - _height) / 2;
 	_down = _up + _height;
 	_left = (_renderer.getColumn() - _width) / 2;
 	_right = _left + _width;
 
-	// ³õÊ¼¹â±êÎ»ÖÃ
+	// åˆå§‹å…‰æ ‡ä½ç½®
 	getCoord(ROW / 2 - 1, COLUMN / 2 - 1, _x, _y);
 }
 
-// ¼ì²éÆå¾ÖÓĞĞ§ĞÔ
+// æ£€æŸ¥æ£‹å±€æœ‰æ•ˆæ€§
 Chessboard::operator bool() const noexcept
 {
 	for (uint8_t row = 0; row < ROW; ++row)
@@ -521,197 +521,197 @@ Chessboard::operator bool() const noexcept
 	return true;
 }
 
-// ³õÊ¼Æå×Ó
+// åˆå§‹æ£‹å­
 void Chessboard::init() noexcept
 {
-	// ³õÊ¼»¯Æå×Ó×´Ì¬
+	// åˆå§‹åŒ–æ£‹å­çŠ¶æ€
 	memset(_states, EMPTY, sizeof _states);
 	uint8_t row = ROW / 2 - 1, column = COLUMN / 2 - 1;
 	_states[row][column + 1] = _states[row + 1][column] = BLACK;
 	_states[row][column] = _states[row + 1][column + 1] = WHITE;
 }
 
-// ÏÔÊ¾Æå¾Ö
+// æ˜¾ç¤ºæ£‹å±€
 void Chessboard::show()
 {
-	// ÉèÖÃ´°¿ÚÑÕÉ«
+	// è®¾ç½®çª—å£é¢œè‰²
 	_renderer.setScreenColor(SCREEN);
 
-	// »æÖÆÆåÅÌ
+	// ç»˜åˆ¶æ£‹ç›˜
 	drawChessboard();
 
-	// »æÖÆÆå×Ó
+	// ç»˜åˆ¶æ£‹å­
 	drawChess();
 
-	// ÉèÖÃ×ÖÌåÑÕÉ«
+	// è®¾ç½®å­—ä½“é¢œè‰²
 	_renderer.setTextColor(PROMPT, SCREEN);
 
-	// ´òÓ¡Æå×ÓÊı
+	// æ‰“å°æ£‹å­æ•°
 	int16_t x = (_left - 8) / 2, y = _renderer.getRow() / 2;
-	_renderer.outText(x, y, "ºÚ×Ó£º");
+	_renderer.outText(x, y, "é»‘å­ï¼š");
 	int16_t column = _renderer.getColumn();
 	x = (column + _right - 8) / 2;
-	_renderer.outText(x, y, "°××Ó£º");
+	_renderer.outText(x, y, "ç™½å­ï¼š");
 
-	// ´òÓ¡»ØºÏÊıºÍÖ´×ÓÆåÊÖ
+	// æ‰“å°å›åˆæ•°å’Œæ‰§å­æ£‹æ‰‹
 	x = (column - 8) / 2;
 	y = (_up - 2) / 2;
-	_renderer.outText(x, y, "»ØºÏ£º");
-	_renderer.outText(x, y + 1, "Ö´×Ó£º");
+	_renderer.outText(x, y, "å›åˆï¼š");
+	_renderer.outText(x, y + 1, "æ‰§å­ï¼š");
 }
 
-// Òş²ØÆå¾Ö
+// éšè—æ£‹å±€
 void Chessboard::hide() const
 {
 	_renderer.clearScreen();
 }
 
-// ¸üĞÂÆå¾Ö
+// æ›´æ–°æ£‹å±€
 void Chessboard::update(uint8_t _round, State _state)
 {
 	using std::setw;
 
-	// ¼ÆËãË«·½Æå×ÓÊı
+	// è®¡ç®—åŒæ–¹æ£‹å­æ•°
 	_numbers[State::BLACK - 1] = _numbers[State::WHITE - 1] = 0;
 	for (uint8_t row = 0; row < ROW; ++row)
 		for (uint8_t column = 0; column < COLUMN; ++column)
 			if (isChess(_index, row, column))
 				++_numbers[_states[row][column] - 1];
 
-	// ÉèÖÃ×ÖÌåÑÕÉ«
+	// è®¾ç½®å­—ä½“é¢œè‰²
 	_renderer.setTextColor(PROMPT, SCREEN);
 
-	// ´òÓ¡ºÚ×ÓÊı
+	// æ‰“å°é»‘å­æ•°
 	_stream.seekp(0, _stream.beg);
 	_stream << setw(2) << std::to_string(_numbers[State::BLACK - 1]) << std::ends;
 	int16_t x = (_left - 8) / 2 + 6, y = _renderer.getRow() / 2;
 	_renderer.outText(x, y, _stream.str().c_str());
 
-	// ´òÓ¡°××ÓÊı
+	// æ‰“å°ç™½å­æ•°
 	_stream.seekp(0, _stream.beg);
 	_stream << setw(2) << std::to_string(_numbers[State::WHITE - 1]) << std::ends;
 	int16_t column = _renderer.getColumn();
 	x = (column + _right - 8) / 2 + 6;
 	_renderer.outText(x, y, _stream.str().c_str());
 
-	// ´òÓ¡»ØºÏÊı
+	// æ‰“å°å›åˆæ•°
 	_stream.seekp(0, _stream.beg);
 	_stream << setw(2) << std::to_string(_round) << std::ends;
 	x = (column - 8) / 2 + 6;
 	y = (_up - 2) / 2;
 	_renderer.outText(x, y, _stream.str().c_str());
 
-	// ´òÓ¡Ö´×ÓÆåÊÖ
-	_renderer.outText(x, y + 1, _state == BLACK ? "ºÚ" : "°×");
+	// æ‰“å°æ‰§å­æ£‹æ‰‹
+	_renderer.outText(x, y + 1, _state == BLACK ? "é»‘" : "ç™½");
 }
 
-// ÅĞ¶ÏÄÜ·ñÂä×Ó
+// åˆ¤æ–­èƒ½å¦è½å­
 bool Chessboard::operable(State _state)
 {
 	for (int16_t row = 0; row < ROW; ++row)
 		for (int16_t column = 0; column < COLUMN; ++column)
 		{
-			// µ±Ç°Î»ÖÃÓĞÆå×Ó
+			// å½“å‰ä½ç½®æœ‰æ£‹å­
 			if (isChess(_index, row, column))
 				continue;
 
-			// ³¢ÊÔ×ª»»
+			// å°è¯•è½¬æ¢
 			setChess(row, column, _state);
 			bool convertible = convert(row, column, true);
 			setChess(row, column, EMPTY);
 
-			// ÊÇ·ñÄÜ¹»×ª»»
+			// æ˜¯å¦èƒ½å¤Ÿè½¬æ¢
 			if (convertible)
 				return true;
 		}
 	return false;
 }
 
-// ÎŞ×Ó¿ÉÂä
+// æ— å­å¯è½
 void Chessboard::skip() const
 {
 	int16_t row = _renderer.getRow(), column = _renderer.getColumn();
-	_renderer.outText(0, column, _down, row, "ÎŞ×Ó¿ÉÂä£¡");
+	_renderer.outText(0, column, _down, row, "æ— å­å¯è½ï¼");
 	Sleep(500);
 	_renderer.outText(0, column, _down, row, "          ");
 }
 
-// ÅĞ¶ÏÆå¾Ö½áÊø
+// åˆ¤æ–­æ£‹å±€ç»“æŸ
 bool Chessboard::judge() const noexcept
 {
-	// ÊÇ·ñÒ»·½ÎŞ×Ó»òÕßÆåÅÌÒÑÂú
+	// æ˜¯å¦ä¸€æ–¹æ— å­æˆ–è€…æ£‹ç›˜å·²æ»¡
 	return _numbers[0] == 0 || _numbers[1] == 0 \
 		|| _numbers[0] + _numbers[1] == ROW * COLUMN;
 }
 
-// Õ¹Ê¾½á¾Ö
+// å±•ç¤ºç»“å±€
 void Chessboard::finish(bool _inoperable) const
 {
-	// ÉèÖÃ×ÖÌåÑÕÉ«
+	// è®¾ç½®å­—ä½“é¢œè‰²
 	_renderer.setTextColor(PROMPT, SCREEN);
 
-	// Ë«·½ÓĞ×ÓÇÒÆåÅÌÎ´Âú£¬µ«Ë«·½ÎŞ×Ó¿ÉÂä
+	// åŒæ–¹æœ‰å­ä¸”æ£‹ç›˜æœªæ»¡ï¼Œä½†åŒæ–¹æ— å­å¯è½
 	if (_inoperable)
 	{
-		_renderer.outText(0, _renderer.getColumn(), _down, _renderer.getRow(), "Ë«·½ÎŞ×Ó¿ÉÂä£¡");
+		_renderer.outText(0, _renderer.getColumn(), _down, _renderer.getRow(), "åŒæ–¹æ— å­å¯è½ï¼");
 		Sleep(500);
 		_renderer.outText(0, _renderer.getColumn(), _down, _renderer.getRow(), "              ");
 	}
 
 	const char* result;
 	if (_numbers[State::BLACK - 1] > _numbers[State::WHITE - 1])
-		result = "ºÚÆåÊ¤£¡";
+		result = "é»‘æ£‹èƒœï¼";
 	else if (_numbers[State::BLACK - 1] < _numbers[State::WHITE - 1])
-		result = "°×ÆåÊ¤£¡";
+		result = "ç™½æ£‹èƒœï¼";
 	else
-		result = "Æ½¾Ö£¡";
+		result = "å¹³å±€ï¼";
 	_renderer.outText(0, _renderer.getColumn(), _down, _renderer.getRow(), result);
 	Sleep(500);
 }
 
-// Âä×Ó²Ù×÷
+// è½å­æ“ä½œ
 bool Chessboard::put(State _state)
 {
-	// ¼ÆËãÏÂ±ê
+	// è®¡ç®—ä¸‹æ ‡
 	int16_t row, column;
 	getIndex(_x, _y, row, column);
 
-	// µ±Ç°Î»ÖÃÓĞÆå×Ó
+	// å½“å‰ä½ç½®æœ‰æ£‹å­
 	if (isChess(_index, row, column))
 		return false;
 
-	// ÉèÖÃÆå×Ó²¢³¢ÊÔ×ª»»
+	// è®¾ç½®æ£‹å­å¹¶å°è¯•è½¬æ¢
 	setChess(row, column, _state);
 	if (!convert(row, column, true))
 	{
-		// ×ª»»Ê§°Ü»ØÍË²Ù×÷
+		// è½¬æ¢å¤±è´¥å›é€€æ“ä½œ
 		setChess(row, column, EMPTY);
 		return false;
 	}
 
-	// ×ª»»³É¹¦ÔòÕ¹Ê¾×ª»»¹ı³Ì
+	// è½¬æ¢æˆåŠŸåˆ™å±•ç¤ºè½¬æ¢è¿‡ç¨‹
 	convert(row, column, false);
 	return true;
 }
 
-// ²Ù×÷Ñ­»·
+// æ“ä½œå¾ªç¯
 int Chessboard::loop()
 {
 	using std::setw;
 
-	// °´¼ü²Ù×÷
+	// æŒ‰é”®æ“ä½œ
 	int key;
 	do
 	{
 		wait();
 		key = handle();
-	} while (key == 0); // ¼üÖµÎªÁã£¬ËµÃ÷Æå¾Ö²¶»ñ°´¼ü£¬¼ÌĞø½ÓÊÕ°´¼ü
+	} while (key == 0); // é”®å€¼ä¸ºé›¶ï¼Œè¯´æ˜æ£‹å±€æ•è·æŒ‰é”®ï¼Œç»§ç»­æ¥æ”¶æŒ‰é”®
 
-	// ÖĞÖ¹¶ÔŞÄ
+	// ä¸­æ­¢å¯¹å¼ˆ
 	if (key == ESCAPE)
 	{
 		_renderer.setTextColor(PROMPT, SCREEN);
-		_renderer.outText(0, _renderer.getColumn(), _down, _renderer.getRow(), "ÖĞÖ¹¶ÔŞÄ£¡");
+		_renderer.outText(0, _renderer.getColumn(), _down, _renderer.getRow(), "ä¸­æ­¢å¯¹å¼ˆï¼");
 		Sleep(500);
 	}
 	return key;

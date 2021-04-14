@@ -1,4 +1,4 @@
-#include "Menu.hpp"
+ï»¿#include "Menu.hpp"
 #include "Renderer.hpp"
 
 #include <Windows.h>
@@ -8,65 +8,65 @@
 
 REVERSI_BEGIN
 
-// ºÚÉ«±³¾°
+// é»‘è‰²èƒŒæ™¯
 static constexpr uint16_t COLOR_SCREEN = 0;
-// µ­»ÆÉ«Ç°¾°
+// æ·¡é»„è‰²å‰æ™¯
 static constexpr uint16_t COLOR_VERSE = FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_INTENSITY;
-// ÁÁ°×É«Ç°¾°
+// äº®ç™½è‰²å‰æ™¯
 static constexpr uint16_t COLOR_FRAME = FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_INTENSITY;
-// ÁÁºìÉ«Ç°¾°
+// äº®çº¢è‰²å‰æ™¯
 static constexpr uint16_t COLOR_RESUME = FOREGROUND_RED | FOREGROUND_INTENSITY;
-// ÁÁÀ¶É«Ç°¾°
+// äº®è“è‰²å‰æ™¯
 static constexpr uint16_t COLOR_RESTART = FOREGROUND_BLUE | FOREGROUND_INTENSITY;
-// ÁÁÂÌÉ«Ç°¾°
+// äº®ç»¿è‰²å‰æ™¯
 static constexpr uint16_t COLOR_EXIT = FOREGROUND_GREEN | FOREGROUND_INTENSITY;
 
-// ×İºáºÚ°×
-static const char TEXT_VERSE[][3] = { "ĞØ", "ÂŞ", "Íò", "Ïó", "×İ", "ºá", "ÓĞ", \
-	"Ä¿", "ÔÃ", "Èº", "Çé", "ºÚ", "°×", "Ã÷", \
-	"Èç", "½ñ", "×İ", "ºá", "ÒÑ", "Ïà", "Öª", \
-	"Ôµ", "ºÎ", "ºÚ", "°×", "ÄÑ", "Ïà", "ÈÚ" };
+// çºµæ¨ªé»‘ç™½
+static const char TEXT_VERSE[][3] = { "èƒ¸", "ç½—", "ä¸‡", "è±¡", "çºµ", "æ¨ª", "æœ‰", \
+	"ç›®", "æ‚¦", "ç¾¤", "æƒ…", "é»‘", "ç™½", "æ˜", \
+	"å¦‚", "ä»Š", "çºµ", "æ¨ª", "å·²", "ç›¸", "çŸ¥", \
+	"ç¼˜", "ä½•", "é»‘", "ç™½", "éš¾", "ç›¸", "è" };
 
-// ²Ëµ¥±êÌâ
-static const char *TEXT_TITLE = "ºÚ°×Æå";
-// ²Ëµ¥Ñ¡Ïî
-static const char *TEXT_RESUME = "¼ÌĞøÓÎÏ·";
-static const char *TEXT_RESTART = "ÖØĞÂ¿ªÊ¼";
-static const char *TEXT_EXIT = "ÍË³öÓÎÏ·";
+// èœå•æ ‡é¢˜
+static const char *TEXT_TITLE = "é»‘ç™½æ£‹";
+// èœå•é€‰é¡¹
+static const char *TEXT_RESUME = "ç»§ç»­æ¸¸æˆ";
+static const char *TEXT_RESTART = "é‡æ–°å¼€å§‹";
+static const char *TEXT_EXIT = "é€€å‡ºæ¸¸æˆ";
 
-// ±ß¿òºáÏß
-static const char *TEXT_LINE = "¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô¡ô";
-// ±ß¿òµãĞÎ
-static const char *TEXT_POINT = "¡ô";
-// ¹â±ê×ÖĞÎ
-static const char *TEXT_CURSOR = "¡î";
+// è¾¹æ¡†æ¨ªçº¿
+static const char *TEXT_LINE = "â—†â—†â—†â—†â—†â—†â—†â—†â—†â—†â—†";
+// è¾¹æ¡†ç‚¹å½¢
+static const char *TEXT_POINT = "â—†";
+// å…‰æ ‡å­—å½¢
+static const char *TEXT_CURSOR = "â˜†";
 
-// »ñÈ¡¾äÁĞ¼ä¾à
+// è·å–å¥åˆ—é—´è·
 inline int16_t Menu::getSpace(int16_t _width) const noexcept
 {
 	return (_width - _size * _number) / (_number + 1);
 }
 
-// Ë¢ĞÂ¹â±ê
+// åˆ·æ–°å…‰æ ‡
 void Menu::refreshCursor(const char* _cursor)
 {
 	using std::strlen;
 
 	switch (_choice)
 	{
-	case 0: // ÍË³öÓÎÏ·
+	case 0: // é€€å‡ºæ¸¸æˆ
 		_x = (_width - static_cast<decltype(_width)>(strlen(TEXT_EXIT))) / 2;
 		_x = _left + _x / 2 + 1;
 		_renderer.outText(_x, _y - 2, _cursor);
 		break;
 
-	case 1: // ÖØĞÂ¿ªÊ¼
+	case 1: // é‡æ–°å¼€å§‹
 		_x = (_width - static_cast<decltype(_width)>(strlen(TEXT_RESTART))) / 2;
 		_x = _left + _x / 2 + 1;
 		_renderer.outText(_x, _y - 4, _cursor);
 		break;
 
-	case 2: // ¼ÌĞøÓÎÏ·
+	case 2: // ç»§ç»­æ¸¸æˆ
 		_x = (_width - static_cast<decltype(_width)>(strlen(TEXT_RESUME))) / 2;
 		_x = _left + _x / 2 + 1;
 		_renderer.outText(_x, _y - 6, _cursor);
@@ -77,27 +77,27 @@ void Menu::refreshCursor(const char* _cursor)
 	}
 }
 
-// ĞŞ¸ÄÑ¡Ôñ
+// ä¿®æ”¹é€‰æ‹©
 void Menu::modifyChoice(int _delta) noexcept
 {
-	// Ñ¡Ôñ±àºÅ±ä»¯
+	// é€‰æ‹©ç¼–å·å˜åŒ–
 	_choice += _delta;
 
-	// ·¶Î§Èİ´í´¦Àí
+	// èŒƒå›´å®¹é”™å¤„ç†
 	if (_choice < 0)
 		_choice = _stored ? 2 : 1;
 	else if (_stored ? _choice > 2 : _choice >= 2)
 		_choice = 0;
 }
 
-// ¸üĞÂ²Ëµ¥
+// æ›´æ–°èœå•
 int Menu::update()
 {
-	// ÊÇ·ñ°´¼ü
+	// æ˜¯å¦æŒ‰é”®
 	if (_kbhit() == 0)
 		return 0;
 
-	// ½ÓÊÕ°´¼ü
+	// æ¥æ”¶æŒ‰é”®
 	bool even = false;
 	int key = _getch();
 	if (key == 224)
@@ -106,16 +106,16 @@ int Menu::update()
 		even = true;
 	}
 
-	// Òş²Ø¹â±ê
+	// éšè—å…‰æ ‡
 	refreshCursor("  ");
 	Sleep(40);
 
-	// ĞŞ¸ÄÑ¡Ôñ
-	if (even) // Ë«¼ü
+	// ä¿®æ”¹é€‰æ‹©
+	if (even) // åŒé”®
 	{
-		if (key == UP) // ÉÏ·½Ïò¼ü
+		if (key == UP) // ä¸Šæ–¹å‘é”®
 			modifyChoice(1);
-		else if (key == DOWN) // ÏÂ·½Ïò¼ü
+		else if (key == DOWN) // ä¸‹æ–¹å‘é”®
 			modifyChoice(-1);
 	}
 	return key;
@@ -126,42 +126,42 @@ Menu::Menu(Renderer& _renderer) noexcept
 {
 	using std::strlen;
 
-	// ¼ÆËã²Ëµ¥±ß¿òµÄ¿í¶ÈºÍ¸ß¶È
+	// è®¡ç®—èœå•è¾¹æ¡†çš„å®½åº¦å’Œé«˜åº¦
 	_width = static_cast<decltype(_width)>(strlen(TEXT_LINE));
 	_height = 3 + 4 + 6;
 
-	// ¼ÆËã²Ëµ¥±ß½ç
+	// è®¡ç®—èœå•è¾¹ç•Œ
 	_up = (_renderer.getRow() - _height) / 2;
 	_down = _up + _height;
 	_left = (_renderer.getColumn() - _width) / 2;
 	_right = _left + _width;
 
-	// ¼ÆËã×Ö¿í¶ÈÓë¾äÊıÁ¿
+	// è®¡ç®—å­—å®½åº¦ä¸å¥æ•°é‡
 	_size = static_cast<decltype(_size)>(strlen(TEXT_VERSE[0]));
 	_number = sizeof TEXT_VERSE / sizeof TEXT_VERSE[0] / 7 / 2;
 }
 
-// ÏÔÊ¾²Ëµ¥
+// æ˜¾ç¤ºèœå•
 void Menu::show()
 {
-	// ÉèÖÃ´°¿ÚÑÕÉ«
+	// è®¾ç½®çª—å£é¢œè‰²
 	_renderer.setScreenColor(COLOR_SCREEN);
 
-	// ÉèÖÃ×ÖÌåÑÕÉ«
+	// è®¾ç½®å­—ä½“é¢œè‰²
 	_renderer.setTextColor(COLOR_VERSE, COLOR_SCREEN);
 
-	// ´òÓ¡Ç°Ò»¾ä
+	// æ‰“å°å‰ä¸€å¥
 	int16_t counter = 0;
 	int16_t space = getSpace(_left);
 	for (int16_t column = _left - (space + _size) * _number, index = 0; \
 		index < _number; ++index, column += space + _size)
 		for (int16_t row = _up; row < _down; row += 2)
 		{
-			Sleep(68); // Á½×Ö¼ä¸ô68ms
+			Sleep(68); // ä¸¤å­—é—´éš”68ms
 			_renderer.outText(column, row, TEXT_VERSE[counter++]);
 		}
 
-	// ´òÓ¡ºóÒ»¾ä
+	// æ‰“å°åä¸€å¥
 	space = getSpace(_renderer.getColumn() - _right);
 	for (int16_t column = _right + space, index = 0; \
 		index < _number; ++index, column += space + _size)
@@ -171,7 +171,7 @@ void Menu::show()
 			_renderer.outText(column, row, TEXT_VERSE[counter++]);
 		}
 
-	// ´òÓ¡²Ëµ¥±ß¿ò
+	// æ‰“å°èœå•è¾¹æ¡†
 	Sleep(96);
 	_y = _up;
 	_renderer.setTextColor(COLOR_FRAME, COLOR_SCREEN);
@@ -180,7 +180,7 @@ void Menu::show()
 	_renderer.outText(_left, _right, _y, _y + 1, TEXT_TITLE);
 	_renderer.outText(_left, _y += 2, TEXT_LINE);
 
-	// ¼ÌĞøÓÎÏ·
+	// ç»§ç»­æ¸¸æˆ
 	if (_stored)
 	{
 		_renderer.setTextColor(COLOR_RESUME, COLOR_SCREEN);
@@ -188,17 +188,17 @@ void Menu::show()
 		_renderer.outText(_left, _right, _y, _y + 1, TEXT_RESUME);
 	}
 
-	// ÖØĞÂ¿ªÊ¼
+	// é‡æ–°å¼€å§‹
 	_renderer.setTextColor(COLOR_RESTART, COLOR_SCREEN);
 	_y += 2;
 	_renderer.outText(_left, _right, _y, _y + 1, TEXT_RESTART);
 
-	// ÍË³öÓÎÏ·
+	// é€€å‡ºæ¸¸æˆ
 	_renderer.setTextColor(COLOR_EXIT, COLOR_SCREEN);
 	_y += 2;
 	_renderer.outText(_left, _right, _y, _y + 1, TEXT_EXIT);
 
-	// ´òÓ¡²Ëµ¥±ß¿ò
+	// æ‰“å°èœå•è¾¹æ¡†
 	_renderer.setTextColor(COLOR_FRAME, COLOR_SCREEN);
 	_renderer.outText(_left, _y += 2, TEXT_LINE);
 	for (int16_t row = _up + 1; row < _y; ++row)
@@ -207,17 +207,17 @@ void Menu::show()
 		_renderer.outText(_right - 2, row, TEXT_POINT);
 	}
 
-	// Ë¢ĞÂ¹â±ê
+	// åˆ·æ–°å…‰æ ‡
 	refreshCursor(TEXT_CURSOR);
 }
 
-// Òş²Ø²Ëµ¥
+// éšè—èœå•
 void Menu::hide() const
 {
 	_renderer.clearScreen();
 }
 
-// ²Ëµ¥Ñ­»·
+// èœå•å¾ªç¯
 int Menu::loop()
 {
 	int key;
@@ -226,7 +226,7 @@ int Menu::loop()
 		refreshCursor(TEXT_CURSOR);
 		Sleep(40);
 		key = update();
-	} while (key != ENTER && key != SPACE); // °´Enter»òSpaceÈ·¶¨Ñ¡Ïî
+	} while (key != ENTER && key != SPACE); // æŒ‰Enteræˆ–Spaceç¡®å®šé€‰é¡¹
 	return _choice;
 }
 

@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include <cstdint>
 
@@ -9,46 +9,46 @@ class Renderer;
 REVERSI_BEGIN
 class Menu
 {
-	Renderer& _renderer; // äÖÈ¾Æ÷
-	bool _stored; // ´æ´¢±ê¼Ç
+	Renderer& _renderer; // æ¸²æŸ“å™¨
+	bool _stored; // å­˜å‚¨æ ‡è®°
 
-	int16_t _width, _height; // ²Ëµ¥±ß¿ò¿í¶ÈºÍ¸ß¶È
-	int16_t _up, _down, _left, _right; // ²Ëµ¥±ß½ç
-	int16_t _size, _number; // ×Ö¿í¶ÈÓë¾äÊıÁ¿
+	int16_t _width, _height; // èœå•è¾¹æ¡†å®½åº¦å’Œé«˜åº¦
+	int16_t _up, _down, _left, _right; // èœå•è¾¹ç•Œ
+	int16_t _size, _number; // å­—å®½åº¦ä¸å¥æ•°é‡
 
-	int16_t _x, _y; // ¹â±êÎ»ÖÃ
-	int _choice; // Ñ¡Ôñ±àºÅ
+	int16_t _x, _y; // å…‰æ ‡ä½ç½®
+	int _choice; // é€‰æ‹©ç¼–å·
 
 private:
-	// »ñÈ¡¾äÁĞ¼ä¾à
+	// è·å–å¥åˆ—é—´è·
 	int16_t getSpace(int16_t _width) const noexcept;
 
-	// Ë¢ĞÂ¹â±ê
+	// åˆ·æ–°å…‰æ ‡
 	void refreshCursor(const char* _cursor);
 
-	// ¸üĞÂÑ¡Ôñ
+	// æ›´æ–°é€‰æ‹©
 	void modifyChoice(int _delta) noexcept;
 
-	// ¸üĞÂ²Ëµ¥
+	// æ›´æ–°èœå•
 	int update();
 
 public:
 	Menu(Renderer& _renderer) noexcept;
 
-	// ¼ÌĞøÓÎÏ·
+	// ç»§ç»­æ¸¸æˆ
 	void resume(bool _stored) noexcept
 	{
 		this->_stored = _stored;
 		_choice = _stored ? 2 : 1;
 	}
 
-	// ÏÔÊ¾²Ëµ¥
+	// æ˜¾ç¤ºèœå•
 	void show();
 
-	// Òş²Ø²Ëµ¥
+	// éšè—èœå•
 	void hide() const;
 
-	// ²Ëµ¥Ñ­»·
+	// èœå•å¾ªç¯
 	int loop();
 };
 REVERSI_END

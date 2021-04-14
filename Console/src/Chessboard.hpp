@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include <cstdint>
 #include <sstream>
@@ -17,122 +17,122 @@ public:
 	enum State : char { EMPTY, BLACK, WHITE };
 
 private:
-	static constexpr uint8_t ROW = 8, COLUMN = 8; // ÆåÅÌÃ¿±ß¸ñ×ÓÊý
-	static const Index _index; // ÏÂ±êËµÃ÷·û
-	static const Coordinate _coordinate; // ×ø±êËµÃ÷·û
+	static constexpr uint8_t ROW = 8, COLUMN = 8; // æ£‹ç›˜æ¯è¾¹æ ¼å­æ•°
+	static const Index _index; // ä¸‹æ ‡è¯´æ˜Žç¬¦
+	static const Coordinate _coordinate; // åæ ‡è¯´æ˜Žç¬¦
 
-	std::stringstream _stream; // ×Ö·ûÁ÷
-	Renderer& _renderer; // äÖÈ¾Æ÷
+	std::stringstream _stream; // å­—ç¬¦æµ
+	Renderer& _renderer; // æ¸²æŸ“å™¨
 
-	int16_t _width, _height; // ÆåÅÌ¿í¶ÈºÍ¸ß¶È
-	int16_t _up, _down, _left, _right; // ÆåÅÌ±ß½ç
+	int16_t _width, _height; // æ£‹ç›˜å®½åº¦å’Œé«˜åº¦
+	int16_t _up, _down, _left, _right; // æ£‹ç›˜è¾¹ç•Œ
 
-	int16_t _x, _y; // ¹â±êÎ»ÖÃ
+	int16_t _x, _y; // å…‰æ ‡ä½ç½®
 
-	State _states[ROW][COLUMN]; // Æå×Ó×´Ì¬
-	uint8_t _numbers[2]; // Ë«·½Æå×ÓÊý
+	State _states[ROW][COLUMN]; // æ£‹å­çŠ¶æ€
+	uint8_t _numbers[2]; // åŒæ–¹æ£‹å­æ•°
 
 private:
 	friend std::istream& operator >>(std::istream& _input, Chessboard& _chessboard);
 	friend std::ostream& operator <<(std::ostream& _output, const Chessboard& _chessboard);
 
-	// ×ª»»×ø±êÎªÏÂ±ê
+	// è½¬æ¢åæ ‡ä¸ºä¸‹æ ‡
 	void getIndex(int16_t _x, int16_t _y, int16_t& _row, int16_t& _column) const noexcept;
 
-	// ×ª»»ÏÂ±êÎª×ø±ê
+	// è½¬æ¢ä¸‹æ ‡ä¸ºåæ ‡
 	void getCoord(int16_t _row, int16_t _column, int16_t& _x, int16_t& _y) const noexcept;
 
-	// ÅÐ¶ÏÖ¸¶¨ÏÂ±êÊÇ·ñÆå×Ó
+	// åˆ¤æ–­æŒ‡å®šä¸‹æ ‡æ˜¯å¦æ£‹å­
 	bool isChess(Index _index, int16_t _row, int16_t _column) const noexcept;
 
-	// ÅÐ¶ÏÖ¸¶¨×ø±êÊÇ·ñÆå×Ó
+	// åˆ¤æ–­æŒ‡å®šåæ ‡æ˜¯å¦æ£‹å­
 	bool isChess(Coordinate _coordinate, int16_t _x, int16_t _y) const noexcept;
 
-	// ÉèÖÃÆå×Ó×´Ì¬
+	// è®¾ç½®æ£‹å­çŠ¶æ€
 	void setChess(int16_t _row, int16_t _column, State _state) noexcept;
 
-	// ÉèÖÃ¹â±êÑÕÉ«
+	// è®¾ç½®å…‰æ ‡é¢œè‰²
 	void setCursorColor() const;
 
-	// ÉèÖÃÆå×ÓÑÕÉ«
+	// è®¾ç½®æ£‹å­é¢œè‰²
 	void setChessColor(int16_t _x, int16_t _y) const;
 
-	// »æÖÆÆåÅÌ
+	// ç»˜åˆ¶æ£‹ç›˜
 	void drawChessboard();
 
-	// »æÖÆËùÓÐÆå×Ó
+	// ç»˜åˆ¶æ‰€æœ‰æ£‹å­
 	void drawChess() const;
 
-	// ×ª»»µ¥¸öÆå×Ó£¬Õ¹Ê¾¶¯Ì¬Ð§¹û
+	// è½¬æ¢å•ä¸ªæ£‹å­ï¼Œå±•ç¤ºåŠ¨æ€æ•ˆæžœ
 	void convertOne(int16_t _row, int16_t _column, State _state);
 
-	// ×ª»»ÉÏ·½Æå×Ó
+	// è½¬æ¢ä¸Šæ–¹æ£‹å­
 	bool convertUp(int16_t _row, int16_t _column, bool _judgmental);
 
-	// ×ª»»ÏÂ·½Æå×Ó
+	// è½¬æ¢ä¸‹æ–¹æ£‹å­
 	bool convertDown(int16_t _row, int16_t _column, bool _judgmental);
 
-	// ×ª»»×ó·½Æå×Ó
+	// è½¬æ¢å·¦æ–¹æ£‹å­
 	bool convertLeft(int16_t _row, int16_t _column, bool _judgmental);
 
-	// ×ª»»ÓÒ·½Æå×Ó
+	// è½¬æ¢å³æ–¹æ£‹å­
 	bool convertRight(int16_t _row, int16_t _column, bool _judgmental);
 
-	// ×ª»»×óÉÏÆå×Ó
+	// è½¬æ¢å·¦ä¸Šæ£‹å­
 	bool convertLeftUp(int16_t _row, int16_t _column, bool _judgmental);
 
-	// ×ª»»ÓÒÉÏÆå×Ó
+	// è½¬æ¢å³ä¸Šæ£‹å­
 	bool convertRightUp(int16_t _row, int16_t _column, bool _judgmental);
 
-	// ×ª»»×óÏÂÆå×Ó
+	// è½¬æ¢å·¦ä¸‹æ£‹å­
 	bool convertLeftDown(int16_t _row, int16_t _column, bool _judgmental);
 
-	// ×ª»»ÓÒÏÂÆå×Ó
+	// è½¬æ¢å³ä¸‹æ£‹å­
 	bool convertRightDown(int16_t _row, int16_t _column, bool _judgmental);
 
-	// ×ª»»Æå×Ó
+	// è½¬æ¢æ£‹å­
 	bool convert(int16_t _row, int16_t _column, bool _judgmental);
 
-	// µÈ´ý²Ù×÷
+	// ç­‰å¾…æ“ä½œ
 	void wait() const;
 
-	// ´¦ÀíÊÂ¼þ
+	// å¤„ç†äº‹ä»¶
 	int handle();
 
 public:
 	Chessboard(Renderer& _renderer) noexcept;
 
-	// ¼ì²éÆå¾ÖÓÐÐ§ÐÔ
+	// æ£€æŸ¥æ£‹å±€æœ‰æ•ˆæ€§
 	explicit operator bool() const noexcept;
 
-	// ³õÊ¼Æå×Ó
+	// åˆå§‹æ£‹å­
 	void init() noexcept;
 
-	// ÏÔÊ¾Æå¾Ö
+	// æ˜¾ç¤ºæ£‹å±€
 	void show();
 
-	// Òþ²ØÆå¾Ö
+	// éšè—æ£‹å±€
 	void hide() const;
 
-	// ¸üÐÂÆå¾Ö
+	// æ›´æ–°æ£‹å±€
 	void update(uint8_t _round, State _state);
 
-	// ÅÐ¶ÏÄÜ·ñÂä×Ó
+	// åˆ¤æ–­èƒ½å¦è½å­
 	bool operable(State _state);
 
-	// ÎÞ×Ó¿ÉÂä
+	// æ— å­å¯è½
 	void skip() const;
 
-	// ÅÐ¶ÏÆå¾Ö½áÊø
+	// åˆ¤æ–­æ£‹å±€ç»“æŸ
 	bool judge() const noexcept;
 
-	// Õ¹Ê¾½á¾Ö
+	// å±•ç¤ºç»“å±€
 	void finish(bool _inoperable) const;
 
-	// Âä×Ó²Ù×÷
+	// è½å­æ“ä½œ
 	bool put(State _state);
 
-	// ²Ù×÷Ñ­»·
+	// æ“ä½œå¾ªçŽ¯
 	int loop();
 };
 REVERSI_END

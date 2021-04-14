@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include <fstream>
 
@@ -14,30 +14,30 @@ class Game
 	using Identity = Chessboard::State;
 
 private:
-	Stream _stream; // ×éºÏÎÄ¼şÁ÷
-	Renderer& _renderer; // ¾ÛºÏäÖÈ¾Æ÷
+	Stream _stream; // ç»„åˆæ–‡ä»¶æµ
+	Renderer& _renderer; // èšåˆæ¸²æŸ“å™¨
 
-	Chessboard _chessboard; // Æå¾Ö
-	Identity _black, _white, *_player; // ºÚ°×ÆåÊÖ
-	char _round; // »ØºÏÊı
+	Chessboard _chessboard; // æ£‹å±€
+	Identity _black, _white, *_player; // é»‘ç™½æ£‹æ‰‹
+	char _round; // å›åˆæ•°
 
 private:
-	// ¼ÓÔØ¼ÇÂ¼
+	// åŠ è½½è®°å½•
 	bool load();
 
-	// ´æ´¢¼ÇÂ¼
+	// å­˜å‚¨è®°å½•
 	void save();
 
-	// ÖØĞÂ¿ªÊ¼
+	// é‡æ–°å¼€å§‹
 	void restart() noexcept;
 
-	// ÂÖ»»Ö´×ÓÕß
+	// è½®æ¢æ‰§å­è€…
 	void rotate(bool _forward) noexcept;
 
-	// ÅĞ¶¨ÓÎÏ·½áÊø
+	// åˆ¤å®šæ¸¸æˆç»“æŸ
 	bool judge();
 
-	// ¶ÔŞÄÂß¼­
+	// å¯¹å¼ˆé€»è¾‘
 	void play();
 
 public:
@@ -53,7 +53,7 @@ public:
 			_stream.close();
 	}
 
-	// ÓÎÏ·Ñ­»·
+	// æ¸¸æˆå¾ªç¯
 	void loop();
 };
 REVERSI_END

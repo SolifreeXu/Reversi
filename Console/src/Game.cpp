@@ -1,4 +1,4 @@
-#include "Game.hpp"
+ï»¿#include "Game.hpp"
 #include "Renderer.hpp"
 #include "Menu.hpp"
 
@@ -7,22 +7,22 @@
 
 REVERSI_BEGIN
 
-// ¼ÇÂ¼ÎÄ¼şÃû
+// è®°å½•æ–‡ä»¶å
 static const char *IMAGE = "Reversi.dat";
 
-// ¼ÓÔØ¼ÇÂ¼
+// åŠ è½½è®°å½•
 bool Game::load()
 {
-	// ¹Ø±ÕÎÄ¼şÁ÷
+	// å…³é—­æ–‡ä»¶æµ
 	if (_stream.is_open())
 		_stream.close();
 
-	// ÒÔ¶Á·½Ê½´ò¿ªÎÄ¼şÁ÷
+	// ä»¥è¯»æ–¹å¼æ‰“å¼€æ–‡ä»¶æµ
 	_stream.open(IMAGE, Stream::in);
 	if (!_stream.is_open())
 		return false;
 
-	// ¶ÁÈ¡¼ÇÂ¼
+	// è¯»å–è®°å½•
 	_stream >> _chessboard;
 	if (!_chessboard)
 		return false;
@@ -32,44 +32,44 @@ bool Game::load()
 	return true;
 }
 
-// ´æ´¢¼ÇÂ¼
+// å­˜å‚¨è®°å½•
 void Game::save()
 {
-	// ¹Ø±ÕÎÄ¼şÁ÷
+	// å…³é—­æ–‡ä»¶æµ
 	if (_stream.is_open())
 		_stream.close();
 
-	// ÒÔĞ´·½Ê½´ò¿ªÎÄ¼şÁ÷
+	// ä»¥å†™æ–¹å¼æ‰“å¼€æ–‡ä»¶æµ
 	_stream.open(IMAGE, Stream::out);
 	if (_stream.is_open())
 	{
-		// Ğ´Èë¼ÇÂ¼
+		// å†™å…¥è®°å½•
 		_stream << _chessboard;
 		_stream.write(&_round, sizeof _round);
 	}
 }
 
-// ÖØĞÂ¿ªÊ¼
+// é‡æ–°å¼€å§‹
 void Game::restart() noexcept
 {
-	_round = '\1'; // ³õÊ¼»ØºÏÊı
-	_player = &_black; // ³õÊ¼Ö´×ÓÕß
-	_chessboard.init(); // ³õÊ¼»¯Æå¾Ö
+	_round = '\1'; // åˆå§‹å›åˆæ•°
+	_player = &_black; // åˆå§‹æ‰§å­è€…
+	_chessboard.init(); // åˆå§‹åŒ–æ£‹å±€
 }
 
-// ÂÖ»»Ö´×ÓÕß
+// è½®æ¢æ‰§å­è€…
 void Game::rotate(bool _forward) noexcept
 {
-	// Ç°Ïò»òÕßºóÏòÇĞ»»»ØºÏ
+	// å‰å‘æˆ–è€…åå‘åˆ‡æ¢å›åˆ
 	_forward ? ++_round : --_round;
 
 	switch (*_player)
 	{
-	case Identity::BLACK: // ºÚ×Ó»»Îª°××Ó
+	case Identity::BLACK: // é»‘å­æ¢ä¸ºç™½å­
 		_player = &_white;
 		break;
 
-	case Identity::WHITE: // °××Ó»»ÎªºÚ×Ó
+	case Identity::WHITE: // ç™½å­æ¢ä¸ºé»‘å­
 		_player = &_black;
 		break;
 
@@ -78,71 +78,71 @@ void Game::rotate(bool _forward) noexcept
 	}
 }
 
-// ÅĞ¶ÏÓÎÏ·½áÊø
+// åˆ¤æ–­æ¸¸æˆç»“æŸ
 bool Game::judge()
 {
-	// ÓĞ×Ó¿ÉÂä
+	// æœ‰å­å¯è½
 	if (_chessboard.operable(*_player))
 		return false;
 
-	// Ç°ÏòÂÖ»»Ö´×ÓÕß
+	// å‰å‘è½®æ¢æ‰§å­è€…
 	rotate(true);
 
-	// ÓĞ×Ó¿ÉÂä
+	// æœ‰å­å¯è½
 	if (_chessboard.operable(*_player))
 	{
-		// ºóÏòÂÖ»»Ö´×ÓÕß
+		// åå‘è½®æ¢æ‰§å­è€…
 		rotate(false);
 		return false;
 	}
 
-	// Ë«·½ÎŞ×Ó¿ÉÂä
+	// åŒæ–¹æ— å­å¯è½
 	return true;
 }
 
-// ¶ÔŞÄÂß¼­
+// å¯¹å¼ˆé€»è¾‘
 void Game::play()
 {
-	// ÏÔÊ¾Æå¾Ö
+	// æ˜¾ç¤ºæ£‹å±€
 	_chessboard.show();
 	_chessboard.update(_round, *_player);
 
 	int key;
 	do
 	{
-		// Æå¾Ö²Ù×÷Ñ­»·
+		// æ£‹å±€æ“ä½œå¾ªç¯
 		key = _chessboard.loop();
 
-		// ÖĞÖ¹ÓÎÏ·
+		// ä¸­æ­¢æ¸¸æˆ
 		if (key == ESCAPE)
 		{
-			save(); // ´æ´¢¼ÇÂ¼
+			save(); // å­˜å‚¨è®°å½•
 			break;
 		}
-		// Âä×Ó²Ù×÷
+		// è½å­æ“ä½œ
 		else if (key == SPACE)
 		{
-			// ÊÇ·ñ³É¹¦Âä×Ó
+			// æ˜¯å¦æˆåŠŸè½å­
 			if (!_chessboard.put(*_player))
 				continue;
 
-			// ÂÖ»»Ö´×ÓÕß
+			// è½®æ¢æ‰§å­è€…
 			rotate(true);
-			// ¸üĞÂÆå¾Ö
+			// æ›´æ–°æ£‹å±€
 			_chessboard.update(_round, *_player);
 
 			/*
-			 * ÓÎÏ·½áÊøÌõ¼şÖ®Ò»£ºÒ»·½ÎŞ×Ó»òÕßÆåÅÌÒÑÂú
-			 * ÓÎÏ·½áÊøÌõ¼şÖ®¶ş£ºË«·½ÎŞ×Ó¿ÉÂä
+			 * æ¸¸æˆç»“æŸæ¡ä»¶ä¹‹ä¸€ï¼šä¸€æ–¹æ— å­æˆ–è€…æ£‹ç›˜å·²æ»¡
+			 * æ¸¸æˆç»“æŸæ¡ä»¶ä¹‹äºŒï¼šåŒæ–¹æ— å­å¯è½
 			 */
 			if (bool inoperable = false; _chessboard.judge() || (inoperable = judge()))
 			{
-				// Õ¹Ê¾½á¾Ö
+				// å±•ç¤ºç»“å±€
 				_chessboard.finish(inoperable);
 				break;
 			}
 
-			// ÎŞ×Ó¿ÉÂä
+			// æ— å­å¯è½
 			if (!_chessboard.operable(*_player))
 			{
 				_chessboard.skip();
@@ -152,32 +152,32 @@ void Game::play()
 		}
 	} while (true);
 
-	// Òş²ØÆå¾Ö
+	// éšè—æ£‹å±€
 	_chessboard.hide();
 }
 
-// ÓÎÏ·Ñ­»·
+// æ¸¸æˆå¾ªç¯
 void Game::loop()
 {
 	int choice;
 	Menu menu(_renderer);
 	do
 	{
-		// ¼ÓÔØ¼ÇÂ¼£¬¸ù¾İÓĞÎŞ¼ÇÂ¼£¬³õÊ¼»¯²Ëµ¥¹â±ê
+		// åŠ è½½è®°å½•ï¼Œæ ¹æ®æœ‰æ— è®°å½•ï¼Œåˆå§‹åŒ–èœå•å…‰æ ‡
 		menu.resume(load());
 
-		// Ñ¡Ôñ²Ëµ¥Ïî
+		// é€‰æ‹©èœå•é¡¹
 		menu.show();
 		choice = menu.loop();
 		menu.hide();
 
 		switch (choice)
 		{
-		case 2: // ¼ÌĞøÓÎÏ·
+		case 2: // ç»§ç»­æ¸¸æˆ
 			play();
 			break;
 
-		case 1: // ÖØĞÂ¿ªÊ¼
+		case 1: // é‡æ–°å¼€å§‹
 			restart();
 			play();
 			break;
@@ -185,7 +185,7 @@ void Game::loop()
 		default:
 			break;
 		}
-	} while (choice != 0); // Ñ¡ÔñÍË³öÓÎÏ·¼´ÍË³öÑ­»·
+	} while (choice != 0); // é€‰æ‹©é€€å‡ºæ¸¸æˆå³é€€å‡ºå¾ªç¯
 }
 
 REVERSI_END
